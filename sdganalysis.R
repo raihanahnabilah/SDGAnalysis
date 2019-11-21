@@ -10,6 +10,12 @@ skillscc <- skills[c(8,10,18:21,33:45)]
 childeconocc <- childecono[c(8,10,16:19,31:39)]
 bankcc <- bank[c(8,10,18,19,31:34)]
 
+#### CHECKING ALL THE DATASETS YEAR ####
+names(proficiencycc)
+names(skillscc)
+names(childeconocc)
+names(bankcc)
+
 #### LATEST YEAR ONLY ####
 # upper secondary level - latest year
 proflatestup <- proficiencyupsec[c(1,24)]
@@ -108,22 +114,22 @@ unique(proficiencyprim$value_latest_year)
 
 # Plotting histogram for all data
 par(mfrow=c(2,2))
-hist(proficiencycc$value_latest_year, main = "Distribution of Proficiency Level in Countries for All Levels of Education (Primary, Lower and Upper Secondary)",
+hist(proficiencycc$value_latest_year, main = "Distribution of Water Accessibility in Countries for All Levels of Education (Primary, Lower and Upper Secondary)",
      cex.main = 1, col = "rosybrown", xlab = "Percentage of Proficiency")
-p1 <- hist(proficiencyupsec$value_latest_year, main = "Distribution of Proficiency Level in Countries for Upper Secondary Level",
+p1 <- hist(proficiencyupsec$value_latest_year, main = "Distribution of Water Accessibility in Countries for Upper Secondary Level",
      col = "rosybrown", xlab = "Percentage of Proficiency")
-p2 <- hist(proficiencylowsec$value_latest_year, main = "Distribution of Proficiency Level in Countries for Lower Secondary Level",
+p2 <- hist(proficiencylowsec$value_latest_year, main = "Distribution of Water Accessibility in Countries for Lower Secondary Level",
      col = "rosybrown", xlab = "Percentage of Proficiency")
-p3 <- hist(proficiencyprim$value_latest_year, main = "Distribution of Proficiency Level in Countries for Primary Level",
+p3 <- hist(proficiencyprim$value_latest_year, main = "Distribution of Water Accessibilityin Countries for Primary Level",
      col = "rosybrown", xlab = "Percentage of Proficiency", xlim = c(0,100))
 par(mfrow=c(1,1))
-plot(p1, col="khaki1", xlim=c(0,100), main = "Distribution of Proficiency Level in Countries for Different Levels of Education (Primary, Lower, and Upper Secondary Level)",
-     xlab = "Percentage of proficiency")
-plot(p2, col="khaki3", xlim=c(0,100), add=T,  main = "Distribution of Proficiency Level in Countries for Different Levels of Education (Primary, Lower, and Upper Secondary Level)",
-     xlab = "Percentage of proficiency") 
+plot(p1, col="khaki1", xlim=c(0,100), main = "Distribution of Water Accessibility in Countries for Different Levels of Education (Primary, Lower, and Upper Secondary Level)",
+     xlab = "Percentage of Water Accessibility")
+plot(p2, col="khaki3", xlim=c(0,100), add=T,  main = "Distribution of Water Accessibility in Countries for Different Levels of Education (Primary, Lower, and Upper Secondary Level)",
+     xlab = "Percentage of Water Accessibility") 
 plot(p3, add = T, col = "khaki4", xlim=c(0,100),
-     main = "Distribution of Proficiency Level in Countries for Different Levels of Education (Primary, Lower, and Upper Secondary Level)",
-     xlab = "Percentage of proficiency")
+     main = "Distribution of Water Accessibility in Countries for Different Levels of Education (Primary, Lower, and Upper Secondary Level)",
+     xlab = "Percentage of Water Accessibility")
 legend("topleft", title = "Education Level", c("Primary", "Lower Secondary", "Upper Secondary"), 
        fill = c("khaki4", "khaki3", "khaki1"), cex=0.8)
 # DEFINITELY NOT NORMAL! And a lot of countries are actually 100!
@@ -183,6 +189,27 @@ plot(goal11$value_latest_year.x, goal11$value_latest_year.y)
 cor(goal11$value_latest_year.x, goal11$value_latest_year.y)
 # small correlation lmao: 0.405
 
+# Heat correlation
+goal1 <- goal1[c(2,3)]
+cormat3 <- round(cor(goal1), 2)
+install.packages("corrplot")
+library(corrplot)
+corrplot(cormat3)
+
+library(reshape2)
+meltedcormat3 <- melt(cormat3)
+head(meltedcormat3)
+library(ggplot2)
+ggplot(data=meltedcormat3, aes(x=Var1, y=Var2, fill=value))
+plot4 <- ggplot(data = meltedcormat3, aes(x=Var1, y=Var2, fill=value, 
+                                          label= value))
+plottitle3 <- plot4 + geom_tile()
+plottitle3
+plotcolor3 <- plottitle3 + scale_fill_gradient2(low = "blue",high ="red"
+                                                ,mid = "lightblue1")
+plotlabel3 <- plotcolor3 + geom_text()
+plotlabel3
+
 # LITERATURE AND LOWER SECONDARY!
 goal2 <- merge(proflatestlow, skillatestlit, by =c("geoAreaName"))
 plot(goal2$value_latest_year.x, goal2$value_latest_year.y)
@@ -205,8 +232,8 @@ plot(goal33$value_latest_year.x, goal33$value_latest_year.y)
 cor(goal33$value_latest_year.x, goal33$value_latest_year.y)
 # low correlation: 0.4053688
 
-# PLOTTING IT AND MAKING IT PRETTY
- 
+#### GOAL 1 - PLOTTING IT AND MAKING IT PRETTY ####
+
 # literacy
 par(mfrow=c(3,1))
 plot(goal3$value_latest_year.x, goal3$value_latest_year.y,
@@ -218,15 +245,14 @@ plot(goal2$value_latest_year.x, goal2$value_latest_year.y,
      main = "Plot between the lower secondary level students who got access to water and the literacy rate",
      xlab = "Percentage of lower secondary level students with water access",
      ylab = "Percentage of adults who are literated",
-     col = "blue")
+     col = "green")
 plot(goal1$value_latest_year.x, goal1$value_latest_year.y,
      main = "Plot between the upper secondary level students who got access to water and the literacy rate",
      xlab = "Percentage of upper secondary level students with water access",
      ylab = "Percentage of adults who are literated",
-     col = "green")
+     col = "blue")
 
 # numerical
-
 
 ggplot(ultimate1, aes(skillite)) +                    # basic graphical object
         geom_line(aes(y=waterprimary), colour="red") +  # first layer
@@ -345,6 +371,7 @@ plotlabel1
 
 str(bankcc)
 unique(bankcc$value_latest_year)
+unique(bankcc$value_2017)
 
 # doing both sexes
 bankccs <- bankcc[bankcc$sexDesc == "Both sexes",]
@@ -353,6 +380,7 @@ bankccs <- na.omit(bankccs)
 
 # The histogram - only 15-17 years old
 hist(bankccs$value_latest_year)
+qqnorm(bankcc$value_latest_year)
 
 #### Exploring the childecono data ####
 hist(childeconocc$value_latest_year)
@@ -391,15 +419,19 @@ childeconoccsa <- na.omit(childeconoccsa)
 # the histogram
 hist(childeconocc$value_latest_year)
 hist(childeconoccsa$value_latest_year)
+qqnorm(sqrt(childeconoccsa$value_latest_year))
+hist(sqrt(childeconoccsa$value_latest_year))
+qqnorm(sqrt(childeconoccsa$value_latest_year))
 
 #### GOAL 2 - CORRELATION OF TWO INDICATORS - 5-17 - BOTH SEXES - LATEST YEAR####
 goal7 <- merge(bankccs, childeconoccsa, by = c("geoAreaName"))
 plot(goal7$value_latest_year.x, goal7$value_latest_year.y,
-     main = "Scatter Plot Between Adults with Bank Account and Children (5-17 years old) Engaged in Economic Activity in Different Countries",
+     main = "Plot Between Adults with Bank Account (15 years and older) and Children (5-17 years old) Engaged in Economic Activity in Different Countries",
      ylab = "Number of Children Engaged in Economic Activity",
      xlab = "Number of Adults with Bank Account",
      col = "blue")
 cor(goal7$value_latest_year.x, goal7$value_latest_year.y)
+legend("topleft", title = "Correlation", c("-0.4372382"), cex=0.8)
 
 is.num <- sapply(goal7, is.numeric)
 goal7[is.num] <- lapply(goal7[is.num], round, 2)
@@ -428,7 +460,7 @@ plotcolor2 <- plottitle2 + scale_fill_gradient2(low = "blue",high ="red"
 plotlabel2 <- plotcolor2 + geom_text()
 plotlabel2
 
-#### CORRELATION ACROSS THE TWO GOALS ####
+#### GOAL 1 AND 2 CORRELATION ACROSS THE TWO GOALS ####
 goal8 <- merge(bankccs, skillatestlit, by = c("geoAreaName"))
 par(mfrow=c(1,1))
 plot(goal8$value_latest_year.x, goal8$value_latest_year.y)
@@ -450,9 +482,214 @@ plot(goal11$value_latest_year.x, goal11$value_latest_year.y)
 cor(goal11$value_latest_year.x, goal11$value_latest_year.y)
 # -0.5319971
 
+goal12 <- merge(childeconoccsa, proflatestup, by = c("geoAreaName"))
+plot(goal12$value_latest_year.x, goal12$value_latest_year.y)
+cor(goal12$value_latest_year.x, goal12$value_latest_year.y)
+# 0.07511358
+
+goal14 <- merge(bankccs, proflatestup, by = c("geoAreaName"))
+plot(goal14$value_latest_year.x, goal14$value_latest_year.y)
+cor(goal14$value_latest_year.x, goal14$value_latest_year.y)
+# 0.5012732
+
 #### ULTIMATE ULTIMATE MERGING ####
-ugoal <- merge(ultimate1, goal7, by = c("geoAreaName"))
+ugoal <- merge(ultimate, goal7, by = c("geoAreaName"))
+# HAHAHA IT'S SHIT
+
+#### 2017 ####
+# upper secondary level - latest year
+profup7 <- proficiencyupsec[c(1,22)]
+profup7 <- na.omit(profup7)
+
+# literature - last year
+skillit7 <- skillsccboth[skillsccboth$typeOfSkillCode == "LITE",]
+skillit7 <- skillit7[c(1,18)]        
+skillit7 <- na.omit(skillit7)     
+
+# numerical - last year
+skillnum7 <- skillsccboth[skillsccboth$typeOfSkillCode == "NUME",]
+skillnum7 <- skillnum7[c(1,18)]
+skillnum7 <- na.omit(skillnum7)
+
+#### 2014 #### 
+# upper secondary level - latest year
+profup4 <- proficiencyupsec[c(1,19)]
+profup4 <- na.omit(profup4)
+
+# literature - last year
+skillit4 <- skillsccboth[skillsccboth$typeOfSkillCode == "LITE",]
+skillit4 <- skillit4[c(1,15)]        
+skillit4 <- na.omit(skillit4)     
+
+# numerical - last year
+skillnum4 <- skillsccboth[skillsccboth$typeOfSkillCode == "NUME",]
+skillnum4 <- skillnum4[c(1,15)]
+skillnum4 <- na.omit(skillnum4)
+
+# childecono 2014
+# bank 2014 & 2017
+# water 2014 & 2017
+# skills 2012
+
+#### 2012 ####
+# upper secondary level - latest year
+profup2 <- proficiencyupsec[c(1,17)]
+profup2 <- na.omit(profup2)
+
+# literature - last year
+skillit2 <- skillsccboth[skillsccboth$typeOfSkillCode == "LITE",]
+skillit2 <- skillit2[c(1,13)]        
+skillit2 <- na.omit(skillit2)     
+
+# numerical - last year
+skillnum2 <- skillsccboth[skillsccboth$typeOfSkillCode == "NUME",]
+skillnum2 <- skillnum4[c(1,13)]
+skillnum2 <- na.omit(skillnum2)
 
 
+#### GOAL 1: 2012 - LITERATURE AND UPPER SECONDARY #### 
+# LITERATURE AND UPPER SECONDARY!
+goal13 <- merge(profup2,skillit2,by=c("geoAreaName"))
+plot(goal13$value_2012.x, goal13$value_2012.y)
+cor(goal13$value_2015.x, goal13$value_2015.y)
+
+#### GOAL 1: 2012 & 2017- LITERATURE AND UPPER SECONDARY #### 
+# LITERATURE AND UPPER SECONDARY!
+goal14 <- merge(profup7,skillit2,by=c("geoAreaName"))
+plot(goal14$value_2017, goal14$value_2012)
+cor(goal14$value_2015.x, goal14$value_2015.y)
+
+#### ALL THE PLOTS! ####
+# Goal 1 correlation
+goal1 <- merge(proflatestup,skillatestlit,by=c("geoAreaName"))
+plot(goal1$value_latest_year.x, goal1$value_latest_year.y,
+     main = "Plot Between the Upper Secondary Level Students Who Got Access to Water and The Literacy Rate in Different Countries",
+     xlab = "Percentage of upper secondary level students with water access",
+     ylab = "Percentage of adults who are literated",
+     col = "blue")
+cor(goal1$value_latest_year.x, goal1$value_latest_year.y)
+(cor(goal1$value_latest_year.x, goal1$value_latest_year.y))^2
+legend("topleft", title = "Correlation", c("0.7445347"), cex=0.8)
+abline(lm(goal1$value_latest_year.y~goal1$value_latest_year.x), col="tomato3",lty=c(1,2), lwd=c(1, 4))
+
+plot(residuals(a1) ~ predict(a1))
+plot(residuals(a) ~ predict(a))
+
+
+# Goal 2 correlation
+goal7 <- merge(bankccs, childeconoccsa, by = c("geoAreaName"))
+plot(goal7$value_latest_year.x, goal7$value_latest_year.y,
+     main = "Plot Between Adults (15 years and older) with Bank Account and Children (5-17 years old) Engaged in Economic Activity in Different Countries",
+     ylab = "Percentage of Children Engaged in Economic Activity",
+     xlab = "Percentage of Adults with Bank Account",
+     col = "blue")
+cor(goal7$value_latest_year.x, goal7$value_latest_year.y)
+(cor(goal7$value_latest_year.x, goal7$value_latest_year.y))^2
+legend("topleft", title = "Correlation", c("-0.4372382"), cex=0.8)
+abline(lm(goal7$value_latest_year.y~goal7$value_latest_year.x), col="tomato3",lty=c(1,2), lwd=c(1, 4))
+
+# Literacy rate
+goal8 <- merge(bankccs, skillatestlit, by = c("geoAreaName"))
+plot(goal8$value_latest_year.x, goal8$value_latest_year.y,
+     main = "Plot Between Adults (15 years and older) with Bank Account and Literacy Rate in Different Countries",
+     xlab = "Percentage of Adults with Bank Account",
+     ylab = "Percentage of Adults Who Are Literated",
+     col = "blue")
+cor(goal8$value_latest_year.x, goal8$value_latest_year.y)
+(cor(goal8$value_latest_year.x, goal8$value_latest_year.y))^2
+legend("topleft", title = "Correlation", c("0.09928971"), cex=0.8)
+abline(lm(goal8$value_latest_year.y~goal8$value_latest_year.x), col="tomato3",lty=c(1,2), lwd=c(1, 4))
+# 0.09928971
+
+goal10 <- merge(childeconoccsa, skillatestlit, by = c("geoAreaName"))
+plot(goal10$value_latest_year.x, goal10$value_latest_year.y,
+     main = "Plot Between Children (5-17 years old) Engaged in Economic Activity and Literacy Rate in Different Countries",
+     xlab = "Percentage of Children (5-17 years old) Engaged in Economic Activity",
+     ylab = "Percentage of Adults Who Are Literated",
+     col = "blue")
+cor(goal10$value_latest_year.x, goal10$value_latest_year.y)
+legend("bottomright", title = "Correlation", c("-0.2005311"), cex=0.8)
+abline(lm(goal8$value_latest_year.y~goal8$value_latest_year.x), col="tomato3",lty=c(1,2), lwd=c(1, 4))
+# -0.2005311
+
+
+goal12 <- merge(childeconoccsa, proflatestup, by = c("geoAreaName"))
+plot(goal12$value_latest_year.x, goal12$value_latest_year.y)
+cor(goal12$value_latest_year.x, goal12$value_latest_year.y)
+# 0.07511358
+
+goal14 <- merge(bankccs, proflatestup, by = c("geoAreaName"))
+plot(goal14$value_latest_year.x, goal14$value_latest_year.y)
+cor(goal14$value_latest_year.x, goal14$value_latest_year.y)
+# 0.5012732
+
+
+
+
+
+
+
+
+
+plot(goal1$value_latest_year.x, goal1$value_latest_year.y,
+     main = "Plot Between the Upper Secondary Level Students Who Got Access to Water and The Literacy Rate in Different Countries",
+     xlab = "Percentage of upper secondary level students with water access",
+     ylab = "Percentage of adults who are literated",
+     col = "blue")
+abline(a, col="tomato3",lty=c(1,2), lwd=c(1, 4))
+
+plot(sqrt(goal7$value_latest_year.x), sqrt(goal7$value_latest_year.y),
+     main = "Plot Between Adults (15 years and older) with Bank Account and Children (5-17 years old) Engaged in Economic Activity in Different Countries",
+     ylab = "Percentage of Children Engaged in Economic Activity",
+     xlab = "Percentage of Adults with Bank Account",
+     col = "blue")
+abline(b, col="tomato3",lty=c(1,2), lwd=c(1, 4))
+
+
+plot(sqrt(goal8$value_latest_year.x), goal8$value_latest_year.y,
+     main = "Plot Between Adults (15 years and older) with Bank Account and Literacy Rate in Different Countries",
+     xlab = "Percentage of Adults with Bank Account",
+     ylab = "Percentage of Adults Who Are Literated",
+     col = "blue")
+cor(sqrt(goal8$value_latest_year.x), goal8$value_latest_year.y)
+# 0.08751587
+(cor(sqrt(goal8$value_latest_year.x), goal8$value_latest_year.y))^2
+
+abline(c)
+
+
+plot(sqrt(goal10$value_latest_year.x), goal10$value_latest_year.y,
+     main = "Plot Between Children (5-17 years old) Engaged in Economic Activity and Literacy Rate in Different Countries",
+     xlab = "Percentage of Children (5-17 years old) Engaged in Economic Activity",
+     ylab = "Percentage of Adults Who Are Literated",
+     col = "blue")
+cor(sqrt(goal10$value_latest_year.x), goal10$value_latest_year.y)
+# 0.1983845
+
+plot(sqrt(goal12$value_latest_year.x), goal12$value_latest_year.y)
+
+plot(sqrt(goal14$value_latest_year.x), goal14$value_latest_year.y)
+
+a <- lm(goal1$value_latest_year.y ~ goal1$value_latest_year.x)
+b <- lm(sqrt(goal7$value_latest_year.y) ~ sqrt(goal7$value_latest_year.x))
+c <- lm(goal8$value_latest_year.y ~ sqrt(goal8$value_latest_year.x))
+d <- lm(goal10$value_latest_year.y ~ sqrt(goal10$value_latest_year.x))
+e <- lm(goal12$value_latest_year.y ~ sqrt(goal12$value_latest_year.x))
+f<- lm(goal14$value_latest_year.y ~ sqrt(goal14$value_latest_year.x))
+
+a1 <- lm(goal1$value_latest_year.y ~ goal1$value_latest_year.x)
+b1 <- lm(goal7$value_latest_year.y ~ goal7$value_latest_year.x)
+c1 <- lm(goal8$value_latest_year.y ~ goal8$value_latest_year.x)
+d1 <- lm(goal10$value_latest_year.y ~ goal10$value_latest_year.x)
+e1 <- lm(goal12$value_latest_year.y ~ goal12$value_latest_year.x)
+f1<- lm(goal14$value_latest_year.y ~ goal14$value_latest_year.x)
+
+
+coef(a)
+coef(b)
+coef(c)
+coef(d)
+coef(e)
+coef(f)
 
 
