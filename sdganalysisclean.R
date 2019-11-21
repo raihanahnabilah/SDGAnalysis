@@ -419,6 +419,69 @@ cor(log(goal14$value_latest_year.x), sqrt(goal14$value_latest_year.y))
 legend("topleft", title = "Correlation", c("0.4385116"), cex=0.8)
 abline(f, col="tomato3",lty=c(1,2), lwd=c(1, 4))
 
+##### PLOTTING THE RESIDUALS BEFORE TRANSFORMED ####
+plot(residuals(a1) ~ predict(a1),
+     main = "Residual Plot Between the Upper Secondary Level Students Who Got Access to Water and The Literacy Rate in Different Countries",
+     xlab = "Predicted of Percentage of upper secondary level students with water access",
+     ylab = "Residuals of Percentage of adults who are literated",
+     col = "skyblue3")
+plot(residuals(b1) ~ predict(b1),
+     main = "Residual Plot Between Adults (15 years and older) with Bank Account and Children (5-17 years old) Engaged in Economic Activity in Different Countries",
+     ylab = "Residuals of Percentage of Children Engaged in Economic Activity",
+     xlab = "Predicted of Percentage of Adults with Bank Account",
+     col = "lightsalmon3")
+plot(residuals(c1) ~ predict(c1),
+     main = "Residual Plot Between Adults (15 years and older) with Bank Account and Literacy Rate in Different Countries",
+     xlab = "Predicted of Percentage of Adults with Bank Account",
+     ylab = "Residuals of Percentage of Adults Who Are Literated",
+     col = "navajowhite4")
+plot(residuals(d1) ~ predict(d1),
+     main = "Residual Plot Between Children (5-17 years old) Engaged in Economic Activity and Literacy Rate in Different Countries",
+     xlab = "Predicted of Percentage of Children (5-17 years old) Engaged in Economic Activity",
+     ylab = "Residuals of Percentage of Adults Who Are Literated",
+     col = "plum4")
+plot(residuals(e1) ~ predict(e1),
+     main = "Residual Plot Between Water Accessibility and Children (5-17 years old) Engaged in Different Countries",
+     ylab = "Residuals of Percentage of Children (5-17 years old) Engaged in Economic Activity",
+     xlab = "Predicted of Percentage of upper secondary level students with water access",
+     col = "orchid4")
+plot(residuals(f1) ~ predict(f1),
+     main = "Residual Plot Between Adults (15 years and older) with Bank Account and Water Accessibility in Different Countries",
+     ylab = "Residuals of Percentage of Adults with Bank Accoun",
+     xlab = "Predicted of Percentage of upper secondary level students with water access",
+     col = "orchid4")
+
+#### PLOTTING THE RESIDUALS AFTER TRANSFORMED ####
+plot(residuals(a) ~ predict(a),
+     main = "Residual Transformed Plot Between the Upper Secondary Level Students Who Got Access to Water and The Literacy Rate in Different Countries",
+     xlab = "Predicted of Percentage of upper secondary level students with water access",
+     ylab = "Residuals of Percentage of adults who are literated",
+     col = "skyblue3")
+plot(residuals(b) ~ predict(b),
+     main = "Residual Transformed Plot Between Adults (15 years and older) with Bank Account and Children (5-17 years old) Engaged in Economic Activity in Different Countries",
+     ylab = "Residuals of Percentage of Children Engaged in Economic Activity",
+     xlab = "Predicted of Percentage of Adults with Bank Account",
+     col = "lightsalmon3")
+plot(residuals(c) ~ predict(c),
+     main = "Residual Transformed Plot Between Adults (15 years and older) with Bank Account and Literacy Rate in Different Countries",
+     xlab = "Predicted of Percentage of Adults with Bank Account",
+     ylab = "Residuals of Percentage of Adults Who Are Literated",
+     col = "navajowhite4")
+plot(residuals(d) ~ predict(d),
+     main = "Residual Transformed Plot Between Children (5-17 years old) Engaged in Economic Activity and Literacy Rate in Different Countries",
+     xlab = "Predicted of Percentage of Children (5-17 years old) Engaged in Economic Activity",
+     ylab = "Residuals of Percentage of Adults Who Are Literated",
+     col = "plum4")
+plot(residuals(e) ~ predict(e),
+     main = "Residual Transformed Plot Between Water Accessibility and Children (5-17 years old) Engaged in Different Countries",
+     ylab = "Residuals of Percentage of Children (5-17 years old) Engaged in Economic Activity",
+     xlab = "Predicted of Percentage of upper secondary level students with water access",
+     col = "orchid4")
+plot(residuals(f) ~ predict(f),
+     main = "Residual Transformed Plot Between Adults (15 years and older) with Bank Account and Water Accessibility in Different Countries",
+     ylab = "Residuals of Percentage of Adults with Bank Accoun",
+     xlab = "Predicted of Percentage of upper secondary level students with water access",
+     col = "orchid4")
 
 #### LINEAR MODEL BEFORE TRANSFORMATION ####
 a1 <- lm(goal1$value_latest_year.y ~ goal1$value_latest_year.x)
@@ -435,3 +498,19 @@ c <- lm((goal8$value_latest_year.y)^2 ~ sqrt(goal8$value_latest_year.x))
 d <- lm((goal10$value_latest_year.y)^2 ~ sqrt(goal10$value_latest_year.x))
 e <- lm(sqrt(goal12$value_latest_year.y) ~ log(goal12$value_latest_year.x))
 f<- lm(sqrt(goal14$value_latest_year.y) ~ log(goal14$value_latest_year.x))
+
+#### SUMMARY OF LINEAR MODEL BEFORE TRANSFORMATION ####
+summary(a1)
+summary(b1)
+summary(c1)
+summary(d1)
+summary(e1)
+summary(f1)
+#### SUMMARY OF LINEAR MODEL AFTER TRANSFORMATION ####
+summary(a)
+summary(b)
+summary(c)
+summary(d)
+summary(e)
+summary(f)
+
