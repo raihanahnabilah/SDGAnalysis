@@ -33,7 +33,7 @@ skillatestnum <- skillsccboth[skillsccboth$typeOfSkillCode == "NUME",]
 skillatestnum <- skillatestnum[c(1,19)]
 skillatestnum <- na.omit(skillatestnum)
 
-#### Eploring the Proficiency data ####
+#### Eploring the water accessibility data ####
 names(proficiencycc)
 head(proficiencycc)
 unique(proficiencycc$value_2013)
